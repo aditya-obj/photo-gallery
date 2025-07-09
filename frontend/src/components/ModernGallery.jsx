@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Search, Upload, Grid, List, Download, Heart, Share2, Eye, Filter, Moon, Sun } from 'lucide-react';
 import { toast } from 'sonner';
+import { API_BASE_URL } from '../lib/utils';
 
 const ModernGallery = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -36,7 +37,7 @@ const ModernGallery = () => {
     queryKey: ['images', debouncedSearch, page],
     queryFn: async () => {
       const response = await fetch(
-        `/api/images?search=${encodeURIComponent(debouncedSearch)}&page=${page}&limit=20`
+        `${API_BASE_URL}/images?search=${encodeURIComponent(debouncedSearch)}&page=${page}&limit=20`
       );
       if (!response.ok) throw new Error('Failed to fetch images');
       return response.json();

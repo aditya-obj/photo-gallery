@@ -5,7 +5,9 @@ export function cn(...inputs) {
   return twMerge(clsx(inputs));
 }
 
-export const API_BASE_URL = process.env.VITE_API_URL || 'https://photo-gallery-o7kd.onrender.com/api';
+export const API_BASE_URL = import.meta.env.PROD 
+  ? (process.env.VITE_API_URL || 'https://photo-gallery-o7kd.onrender.com/api')
+  : '/api';
 
 export const formatDate = (dateString) => {
   return new Date(dateString).toLocaleDateString('en-US', {
