@@ -65,7 +65,24 @@ app.get('/api/health', (req, res) => {
   res.json({ 
     status: 'OK', 
     timestamp: new Date().toISOString(),
-    version: process.env.npm_package_version || '1.0.0'
+    version: process.env.npm_package_version || '1.0.0',
+    environment: process.env.NODE_ENV || 'development',
+    cors_origins: [
+      'http://localhost:3000',
+      'http://localhost:3002', 
+      'https://photo-gallery-one.vercel.app',
+      process.env.FRONTEND_URL
+    ].filter(Boolean)
+  });
+});
+
+// Test endpoint for debugging
+app.get('/api/test', (req, res) => {
+  res.json({ 
+    message: 'Backend is working!',
+    origin: req.get('Origin'),
+    host: req.get('Host'),
+    timestamp: new Date().toISOString()
   });
 });
 
@@ -83,11 +100,18 @@ app.use('*', (req, res) => {
   res.status(404).json({ error: 'Route not found' });
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server is running on port ${PORT}`);
   console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
   console.log(`Frontend URL: ${process.env.FRONTEND_URL || 'http://localhost:3000'}`);
+  console.log(`Base URL: ${process.env.BASE_URL || 'http://localhost:3001'}`);
   console.log(`Uploads directory: ${uploadsDir}`);
+  console.log(`CORS origins:`, [
+    'http://localhost:3000',
+    'http://localhost:3002', 
+    'https://photo-gallery-one.vercel.app',
+    process.env.FRONTEND_URL
+  ].filter(Boolean));
 });
 
 module.exports = app;
